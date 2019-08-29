@@ -1,5 +1,8 @@
 package store;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OrderItem {
 	
 	private Product product;
@@ -31,7 +34,14 @@ public class OrderItem {
 	}
 
 	private DiscountCalculator createDiscountCalculator() {
+		Map<ProductCategory, DiscountCalculator> map = 
+				new HashMap<ProductCategory, DiscountCalculator>();
 		DiscountCalculator discountCalculator = null;
+		
+		map.put(ProductCategory.Accessories, new AccessoriesDiscount());
+		map.put(ProductCategory.Bikes, new BikesDiscount());
+		map.put(ProductCategory.Cloathing, new CloathingDiscount());
+		
 		if (getProduct().getCategory() == ProductCategory.Accessories) {
 			discountCalculator = new AccessoriesDiscount();
 		}
@@ -41,7 +51,7 @@ public class OrderItem {
 		if (getProduct().getCategory() == ProductCategory.Cloathing) {
 			discountCalculator = new CloathingDiscount();
 		}
-		return discountCalculator;
+		return map.get(getProduct().getCategory());
 	}
 
 	float calculateTotalAmount() {
