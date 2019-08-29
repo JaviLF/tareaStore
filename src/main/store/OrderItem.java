@@ -20,29 +20,32 @@ public class OrderItem {
 	public int getQuantity() {
 		return quantity;
 	}
-
-	float calculateTotalFor() {
+ 
+	float calculateTotalForItem() {
 		float totalItem=0;
-		float itemAmount = getProduct().getUnitPrice() * getQuantity();
 		if (getProduct().getCategory() == ProductCategory.Accessories) {
 			float booksDiscount = 0;
-			if (itemAmount >= 100) {
-				booksDiscount = itemAmount * 10 / 100;
+			if (calculateTotalAmount() >= 100) {
+				booksDiscount = calculateTotalAmount() * 10 / 100;
 			}
-			totalItem = itemAmount - booksDiscount;
+			totalItem = calculateTotalAmount() - booksDiscount;
 		}
 		if (getProduct().getCategory() == ProductCategory.Bikes) {
 			// 20% discount for Bikes
-			totalItem = itemAmount - itemAmount * 20 / 100;
+			totalItem = calculateTotalAmount() - calculateTotalAmount() * 20 / 100;
 		}
 		if (getProduct().getCategory() == ProductCategory.Cloathing) {
 			float cloathingDiscount = 0;
 			if (getQuantity() > 2) {
 				cloathingDiscount = getProduct().getUnitPrice();
 			}
-			totalItem = itemAmount - cloathingDiscount;
+			totalItem = calculateTotalAmount() - cloathingDiscount;
 		}
 		return totalItem;
+	}
+
+	private float calculateTotalAmount() {
+		return getProduct().getUnitPrice() * getQuantity();
 	}
 }
  
