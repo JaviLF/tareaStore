@@ -17,31 +17,44 @@ public class OrderItem {
 		return product;
 	}
 
-	public int getQuantity() {
+	public int getQuantity() { 
 		return quantity;
 	}
  
 	float calculateTotalForItem() {
 		float totalItem=0;
+		float discount = 0;
 		if (getProduct().getCategory() == ProductCategory.Accessories) {
-			float booksDiscount = 0;
-			if (calculateTotalAmount() >= 100) {
-				booksDiscount = calculateTotalAmount() * 10 / 100;
-			}
-			totalItem = calculateTotalAmount() - booksDiscount;
+			discount = calculateDiscountForAccessories();
 		}
 		if (getProduct().getCategory() == ProductCategory.Bikes) {
-			// 20% discount for Bikes
-			totalItem = calculateTotalAmount() - calculateTotalAmount() * 20 / 100;
+			discount = calculateDiscountForBikes();
 		}
 		if (getProduct().getCategory() == ProductCategory.Cloathing) {
-			float cloathingDiscount = 0;
-			if (getQuantity() > 2) {
-				cloathingDiscount = getProduct().getUnitPrice();
-			}
-			totalItem = calculateTotalAmount() - cloathingDiscount;
+			discount = calculateDiscountForCloathing();
 		}
+		totalItem = calculateTotalAmount() - discount;
 		return totalItem;
+	}
+
+	private float calculateDiscountForCloathing() {
+		float cloathingDiscount = 0;
+		if (getQuantity() > 2) {
+			cloathingDiscount = getProduct().getUnitPrice();
+		}
+		return cloathingDiscount;
+	}
+
+	private float calculateDiscountForBikes() {
+		return calculateTotalAmount() * 20 / 100;
+	}
+
+	private float calculateDiscountForAccessories() {
+		float booksDiscount = 0;
+		if (calculateTotalAmount() >= 100) {
+			booksDiscount = calculateTotalAmount() * 10 / 100;
+		}
+		return booksDiscount;
 	}
 
 	private float calculateTotalAmount() {
