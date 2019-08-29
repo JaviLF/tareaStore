@@ -25,16 +25,16 @@ public class OrderItem {
 		float totalItem=0;
 		float discount = 0;
 		if (getProduct().getCategory() == ProductCategory.Accessories) {
-			AccessoriesDiscount accessoriesDiscount = new AccessoriesDiscount();
-			discount = accessoriesDiscount.calculateDiscountForAccessories(this);
+			DiscountCalculator accessoriesDiscount = new AccessoriesDiscount();
+			discount = accessoriesDiscount.calculateDiscount(this);
 		}
 		if (getProduct().getCategory() == ProductCategory.Bikes) {
-			BikesDiscount bikesDiscount = new BikesDiscount();
-			discount = bikesDiscount.calculateDiscountForBikes(this);
+			DiscountCalculator bikesDiscount = new BikesDiscount();
+			discount = bikesDiscount.calculateDiscount(this);
 		}
 		if (getProduct().getCategory() == ProductCategory.Cloathing) {
-			CloathingDiscount cloathingDiscountC = new CloathingDiscount();
-			discount = cloathingDiscountC.calculateDiscountForCloathing(this);
+			DiscountCalculator cloathingDiscountC = new CloathingDiscount();
+			discount = cloathingDiscountC.calculateDiscount(this);
 		}
 		totalItem = calculateTotalAmount() - discount;
 		return totalItem;

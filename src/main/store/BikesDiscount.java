@@ -1,8 +1,8 @@
 package store;
 
-public class BikesDiscount {
+public class BikesDiscount implements DiscountCalculator {
 
-	float calculateDiscountForBikes(OrderItem orderItem) {
+	public float calculateDiscount(OrderItem orderItem) {
 		return orderItem.calculateTotalAmount() * 20 / 100;
 	}
 
