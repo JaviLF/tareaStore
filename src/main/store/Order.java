@@ -57,24 +57,12 @@ public class Order {
 		for (OrderItem item : items) {
 			float totalItem=0;
 			float itemAmount = item.getProduct().getUnitPrice() * item.getQuantity();
-			if (isAccesorie(item)) {
-				float booksDiscount = 0;
-				if (itemAmount >= 100) {
-					booksDiscount = itemAmount * 10 / 100;
-				}
-				totalItem = itemAmount - booksDiscount;
-			}
-			if (isBike(item)) {
-				// 20% discount for Bikes
-				totalItem = itemAmount - itemAmount * 20 / 100;
-			}
-			if (isCloath(item)) {
-				float cloathingDiscount = 0;
-				if (item.getQuantity() > 2) {
-					cloathingDiscount = item.getProduct().getUnitPrice();
-				}
-				totalItem = itemAmount - cloathingDiscount;
-			}
+			if (isAccesory(item))
+				totalItem = applyBookDiscount(itemAmount);
+			if (isBike(item)) 
+				totalItem = applyBikeDiscount(itemAmount);
+			if (isCloath(item))
+				totalItem = applyCloathDiscount(item, itemAmount);
 			totalItems += totalItem;
 		}
 
@@ -87,6 +75,33 @@ public class Order {
 		return totalItems + totalItems * 5 / 100 + 15;
 	}
 
+	private float applyCloathDiscount(OrderItem item, float itemAmount) {
+		float totalItem;
+		float cloathingDiscount = 0;
+		if (item.getQuantity() > 2) {
+			cloathingDiscount = item.getProduct().getUnitPrice();
+		}
+		totalItem = itemAmount - cloathingDiscount;
+		return totalItem;
+	}
+
+	private float applyBikeDiscount(float itemAmount) {
+		float totalItem;
+		// 20% discount for Bikes
+		totalItem = itemAmount - itemAmount * 20 / 100;
+		return totalItem;
+	}
+
+	private float applyBookDiscount(float itemAmount) {
+		float totalItem;
+		float booksDiscount = 0;
+		if (itemAmount >= 100) {
+			booksDiscount = itemAmount * 10 / 100;
+		}
+		totalItem = itemAmount - booksDiscount;
+		return totalItem;
+	}
+
 	private boolean isCloath(OrderItem item) {
 		return item.getProduct().getCategory() == ProductCategory.Cloathing;
 	}
@@ -95,7 +110,7 @@ public class Order {
 		return item.getProduct().getCategory() == ProductCategory.Bikes;
 	}
 
-	private boolean isAccesorie(OrderItem item) {
+	private boolean isAccesory(OrderItem item) {
 		return item.getProduct().getCategory() == ProductCategory.Accessories;
 	}
 }
